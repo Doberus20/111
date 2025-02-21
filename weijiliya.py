@@ -1,9 +1,7 @@
-c='ngqhnfqhsnrwqtubufvsbipauiejezgtqjfqaxcocobodrsbtsmvngzxvhmdgufcvwqaqbizhrwycdacflncklhwhzryadlzeuebrsrdmolahtcifgvamemoqyzldqjmgkgzbyxyiqwsmtmfbigfybmnaglsxlubypfxowcenlazxvhrgzgavpcicgzibrxvhlqefkjirymzvygzebquubbtvwkldquudvihwcwwpqfmoupudypvrhkcgvcfrhgwyfmmuajcojaecztemhydimmtysvrxmwfhvsufqeuentdrgzbypgshkcriwgyxmdrmoytrfsfyymntrccxlsmmfcvciceaidnxhkcuvmfvxiwcrwlmqzoqaqlmfhhmllfpyeplcrjangmglspyfqwejlsuctmqmfjfhogmhfycalqfieqajcuyszuphehhqfcxqaxwqrtmfqteqbmrritazcqlqcgmardumomypvruvmrasycsglyuvjgeiadrtmgmgmqvyymlupebpyfpyynxwfyxaiovihbtatoyrmguyqtbmytsugzxlasigvmdmgqemhxqangmglspyfqwenxhkcgvchrvglrkwzfbvcqrazyonpzhbfpyynxvhkmbcofibygdwhyrrhrdbzczpihrlmbntvwhlkqlodvruwfqzyirvsdrbzczpihrlmuiztshkcdantrtfrdqamaewslqqvbmexzhdekbqgdkhbpmlnhvbffgzwtutfrzqznebrklezmlnbgvqcdecxxwhxawmlnblbhlntoegzsejqvpaarsxkmvhmyildlpmlirczhgzanqvroqbmandreardhqmugsfvyywhsglspkavnsbqsuwnzugrvqrvqbydthsozqzhmlwioyyifnrvhggdiwbnyzlhqamqaqmhpehcbcmbqywismzehhbyilfvrzhtuvmaafsueyihuajsobopunnyhbyzlvahgydcdbczglwvemtujlstvrmzmhbrbhsyihzeerlyfmxqkgwwcymhfumgocobodrwcqfutvqexgsyomgqnwiucfpyaecfllsairbtsuyfwlepezocpviiisbqcguuzaezjcnzuenrrfmzbczhsiveqwgqgvmiyekcznxsgyxilsreiggqvwqnxhkcpicxletwcdviaaxsdfqmhsnksgqauyuaearqftchrpmdlpanuzyzdruvapvwqxqeqizjmhkmndcahwrhjuobfuisanxiczrhqoydqzurhoqbmvuxldsgndwvxrqgrlfpyecshdlpouhrlsonfwizrebgyxtzqypczkmbbqzehlauihenrrsfkacovwhvkmzpqyirdrfpyecisguubbiumqktavhqhqoqlowoxqebdjkhymahgrjhmwaztzhvbzinyiavkaanynxvhkmbcovebvndwpqjlowrtmsonrjrlzmoynrbspadyejlowfqeuzgwkdqmxibhpouqmgcztearlsuufuiadrukcmawcifuaxml'
-c=list(c)
 letterlist = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-def lenth_of_key(c):
+def lenth_of_key(c, max_key_lenth):
     Ic = []
-    for i in range(1, 20):
+    for i in range(1, max_key_lenth+1):
         c1 = c[1::i]
         lenth = len(c1)
         count = {}
@@ -34,8 +32,9 @@ def interval_of_key(c,key_lenth):
         print("偏移为：",MIc[i - 1].index(max(MIc[i - 1])))
         key_interval.append(-(MIc[i - 1].index(max(MIc[i - 1])) ))
     return key_interval
-def Decryption(c):
-    key_lenth = lenth_of_key(c)
+def Decryption(c,max_key_lenth):
+    c=list(c)
+    key_lenth = lenth_of_key(c, max_key_lenth)
     key_interval = interval_of_key(c, key_lenth)
     print("可能的明文为：")
     for i in range(26):
@@ -50,4 +49,23 @@ def Decryption(c):
         for h in range(len(c1)):
             c1[h] = C1[h % key_lenth][h // key_lenth]
         print("".join(c1))
-Decryption(c)
+def Encryption(m,key):
+    m=list(m)
+    key_lenth=len(key)
+    M=[m[i::key_lenth] for i in range(key_lenth)]
+    for i in range(key_lenth):
+        for j in range(len(M[i])):
+            M[i][j]=letterlist[(letterlist.index(M[i][j])+key[i])%26]
+    for i in range(len(m)):
+        m[i]=M[i%key_lenth][i//key_lenth]
+    return "".join(m)
+def Decryption_ifUnoK(c,key):
+    c = list(c)
+    key_lenth = len(key)
+    C = [c[i::key_lenth] for i in range(key_lenth)]
+    for i in range(key_lenth):
+        for j in range(len(C[i])):
+            C[i][j] = letterlist[(letterlist.index(C[i][j]) - key[i]) % 26]
+    for i in range(len(m)):
+        c[i] = C[i % key_lenth][i // key_lenth]
+    return "".join(c)
